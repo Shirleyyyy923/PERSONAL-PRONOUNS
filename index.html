@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Personal Pronouns Grammar Quiz</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            background: #f2f2f2;
+        }
+        .question {
+            background: #fff;
+            padding: 15px;
+            margin-bottom: 10px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        .result {
+            background: #e6ffe6;
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 20px;
+            display: none;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+
+<h2>Personal Pronouns Grammar Quiz</h2>
+
+<form id="quizForm">
+    <label>Name (名字):</label><br>
+    <input type="text" id="name" required><br><br>
+
+    <label>Branch (分院):</label><br>
+    <select id="branch" required>
+        <option value="">Select</option>
+        <option value="Pulai">Pulai</option>
+        <option value="Skudai">Skudai</option>
+    </select><br><br>
+
+    <label>Form (年级):</label><br>
+    <input type="text" id="form" required><br><br>
+
+    <div id="questions"></div>
+
+    <button type="button" onclick="submitQuiz()">Submit</button>
+</form>
+
+<div id="result" class="result"></div>
+
+<script>
+const questions = [
+    {
+        q: "Which pronoun replaces 'John and I'?",
+        options: ["He", "We", "They", "Us"],
+        answer: "We",
+        explain: "John 和我用 '我们'，英文是 'We'。",
+        encourage: "很棒，继续加油！💪"
+    },
+    {
+        q: "Choose the correct pronoun: ___ love to play soccer.",
+        options: ["I", "Me", "She", "Him"],
+        answer: "I",
+        explain: "'我'是主语，要用 'I'。",
+        encourage: "你很努力哦，继续保持！✨"
+    },
+    {
+        q: "___ is my best friend.",
+        options: ["She", "Her", "Hers", "Them"],
+        answer: "She",
+        explain: "主语'她'要用 'She'。",
+        encourage: "棒棒哒，再接再厉！🌟"
+    },
+    {
+        q: "My father gave ___ a gift.",
+        options: ["I", "Me", "She", "We"],
+        answer: "Me",
+        explain: "动作接受者用 'Me'。",
+        encourage: "坚持就是胜利！🚀"
+    },
+    {
+        q: "The teacher asked ___ to answer.",
+        options: ["I", "Me", "We", "They"],
+        answer: "Me",
+        explain: "动作接受者要用 'Me'。",
+        encourage: "继续努力，很接近了！🔥"
+    },
+    {
+        q: "Which pronoun fits: 'This is ___ book.'",
+        options: ["my", "mine", "I", "me"],
+        answer: "my",
+        explain: "'my' 是形容词，修饰 book。",
+        encourage: "一步一步来，你可以的！🌈"
+    },
+    {
+        q: "___ are going to the park.",
+        options: ["They", "Them", "He", "Her"],
+        answer: "They",
+        explain: "主语'他们'要用 'They'。",
+        encourage: "好棒，坚持下去！🛤️"
+    },
+    {
+        q: "Please give the ball to ___.",
+        options: ["they", "them", "their", "theirs"],
+        answer: "them",
+        explain: "接受动作的人用 'them'。",
+        encourage: "你做得很不错！🌻"
+    },
+    {
+        q: "Can you help ___ with the homework?",
+        options: ["we", "us", "our", "ours"],
+        answer: "us",
+        explain: "接受帮助要用 'us'。",
+        encourage: "加油！马上就成功了！💥"
+    },
+    {
+        q: "That pen is ___.",
+        options: ["me", "mine", "I", "my"],
+        answer: "mine",
+        explain: "'mine' 表示属于我。",
+        encourage: "继续努力，棒极了！🌟"
+    },
+    {
+        q: "It belongs to ___.",
+        options: ["he", "him", "his", "hers"],
+        answer: "him",
+        explain: "动作接受者用 'him'。",
+        encourage: "差一点点！继续！🚀"
+    },
+    {
+        q: "She gave the gift to ___.",
+        options: ["I", "me", "we", "us"],
+        answer: "me",
+        explain: "接受动作的人用 'me'。",
+        encourage: "一步一脚印，加油！🌱"
+    },
+    {
+        q: "___ like to read books.",
+        options: ["We", "Us", "They", "Them"],
+        answer: "We",
+        explain: "主语用 'We'。",
+        encourage: "太棒了，继续加油！✨"
+    },
+    {
+        q: "He borrowed the bicycle from ___.",
+        options: ["I", "me", "we", "us"],
+        answer: "me",
+        explain: "动作接受者用 'me'。",
+        encourage: "坚持不懈就是胜利！🏆"
+    },
+    {
+        q: "That is ___ cat.",
+        options: ["our", "ours", "we", "us"],
+        answer: "our",
+        explain: "形容词修饰名词用 'our'。",
+        encourage: "做得好，很认真！📚"
+    },
+    {
+        q: "This car is ___.",
+        options: ["us", "our", "ours", "we"],
+        answer: "ours",
+        explain: "'ours' 表示属于我们。",
+        encourage: "优秀，继续加油！🔥"
+    },
+    {
+        q: "Give it to ___.",
+        options: ["she", "her", "hers", "he"],
+        answer: "her",
+        explain: "动作接受者要用 'her'。",
+        encourage: "你的努力值得被称赞！🎉"
+    },
+    {
+        q: "___ is very tall.",
+        options: ["He", "Him", "His", "She"],
+        answer: "He",
+        explain: "主语要用 'He'。",
+        encourage: "小小进步也是进步！🚶"
+    },
+    {
+        q: "It belongs to ___.",
+        options: ["they", "them", "their", "theirs"],
+        answer: "them",
+        explain: "动作接受者用 'them'。",
+        encourage: "你做到了！继续加油！🎯"
+    },
+    {
+        q: "___ is my mother.",
+        options: ["She", "Her", "Hers", "Him"],
+        answer: "She",
+        explain: "主语'她'用 'She'。",
+        encourage: "完美收官！🏁"
+    }
+];
+
+function submitQuiz() {
+    const name = document.getElementById('name').value;
+    const branch = document.getElementById('branch').value;
+    const form = document.getElementById('form').value;
+    let score = 0;
+    let output = `<h3>名字: ${name}</h3><h3>分院: ${branch}</h3><h3>年级: ${form}</h3><hr>`;
+    
+    questions.forEach((q, index) => {
+        const selected = document.querySelector(`input[name="q${index}"]:checked`);
+        if (selected) {
+            if (selected.value === q.answer) {
+                score++;
+                output += `<p><strong>第${index + 1}题：正确 ✅</strong><br>解释: ${q.explain}<br>鼓励: ${q.encourage}</p>`;
+            } else {
+                output += `<p><strong>第${index + 1}题：错误 ❌</strong><br>正确答案: ${q.answer}<br>解释: ${q.explain}<br>鼓励: ${q.encourage}</p>`;
+            }
+        } else {
+            output += `<p><strong>第${index + 1}题：未作答 ❌</strong><br>正确答案: ${q.answer}<br>解释: ${q.explain}<br>鼓励: ${q.encourage}</p>`;
+        }
+    });
+
+    output += `<hr><h3>总分: ${score} / 20</h3>`;
+    document.getElementById('result').innerHTML = output;
+    document.getElementById('result').style.display = 'block';
+}
+
+window.onload = function() {
+    const qDiv = document.getElementById('questions');
+    questions.forEach((q, index) => {
+        const div = document.createElement('div');
+        div.className = "question";
+        div.innerHTML = `<p><strong>第${index + 1}题.</strong> ${q.q}</p>` +
+                        q.options.map(opt => `
+                            <label><input type="radio" name="q${index}" value="${opt}"> ${opt}</label><br>
+                        `).join('');
+        qDiv.appendChild(div);
+    });
+}
+</script>
+
+</body>
+</html>
